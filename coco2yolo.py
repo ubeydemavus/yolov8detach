@@ -70,6 +70,10 @@ target_train = "challenge_yolo_format/images/train/"
 target_test = "challenge_yolo_format/images/test/"
 target_val = "challenge_yolo_format/images/val/"
 
+assert Path(source_train).is_file(), f"{source_train} doesn't exist. Place video file in {source_train}"
+assert Path(source_test).is_file(), f"{source_test} doesn't exist. Place video file in {source_test}"
+assert Path(source_val).is_file(), f"{source_val} doesn't exist. Place video file in {source_val}"
+
 readvid_writeimg(source_train,target_train)
 cocoformat2yoloformat_annotations(target_train,"challenge/annotations/instances_train.json")
 readvid_writeimg(source_test,target_test)
@@ -78,8 +82,8 @@ readvid_writeimg(source_val,target_val)
 cocoformat2yoloformat_annotations(target_val,"challenge/annotations/instances_val.json")
 
 
-yamlcontent = """
-path: challange_yolo_format  # dataset root dir
+yamlcontent = f"""
+path: {Path(os.getcwd()).as_posix()}/challenge_yolo_format  # dataset root dir
 train: images/train  # train images (relative to 'path')
 val: images/val  # val images (relative to 'path')
 test:  images/test # (relative to 'path')
@@ -87,7 +91,7 @@ test:  images/test # (relative to 'path')
 # Classes
 names:
   0: bolt
-  1: not
+  1: nut
 """
-with open("challange_yolo_format/challange.yaml","w") as f:
+with open("challenge_yolo_format/challange.yaml","w") as f:
     f.write(yamlcontent)
