@@ -150,3 +150,7 @@ weights/
 *_web_model/
 *_openvino_model/
 *_paddle_model/
+
+# Challange related -------------------------------------
+challenge/
+challenge_yolo_format/
