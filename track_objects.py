@@ -18,15 +18,15 @@ detector = YOLO("./runs/detect/train2/weights/best.pt")
 
 
 for frame in get_stream("./challenge/images/test/test.mp4"):
-    #cv2.imshow('frame',frame)
-    #rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = detector.predict(frame,mode='detect', stream=False,verbose =False)
     for r in results:
         r = r.to('cpu')
         for box in r.boxes:
             if box.conf>0.78:
+                
                 x,y,x2,y2 = [int(item.item()) for item in torch.tensor_split(box.xyxy,4,dim=1)]
                 cv2.rectangle(frame, (x, y), (x2,y2), (0,255,0), 2)
+                cv2.putText(frame, str(detector.names[int(box.cls.item())]), (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
         
 
     
