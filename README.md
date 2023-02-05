@@ -132,7 +132,7 @@ This is where the most work needs to be done.
 
 - It doesn't provide a way to set the initial guesses for the filter, either. I found this [repo](https://github.com/GeekAlexis/FastMOT) much later, which seemed to implement kalman filter better, but it was too late to test.
 
-- The package also doesn't provide a low level interface to the Kalman filter implementation thus you can't change sampling time, and//or other variables that affect its estimation/filtering accuracy. Thus, I had to resort to hot-fix workaround in the lines:
+- The package also doesn't provide a low level interface to the Kalman filter implementation thus you can't change sampling time, and/or other variables that affect its estimation/filtering accuracy. Thus, I had to resort to hot-fix workaround in the lines:
 
 ```
 tracker.__dict__['tracker'].kf.__dict__['_std_weight_position'] = 1  # hot fix position and velocity weights, deepsort doesnt provide an interface to change kalman filter, or its parameters.
