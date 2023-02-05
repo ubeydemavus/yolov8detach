@@ -151,6 +151,8 @@ weights/
 *_paddle_model/
 
 # Challange related -------------------------------------
+.vscode/
+.github/
 challenge/
 challenge_yolo_format/
 !runs/

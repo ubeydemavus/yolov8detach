@@ -23,7 +23,7 @@ git clone https://github.com/ubeydemavus/yolov8detach
 cd yolov8detach && pip install -e .
 ```
 
-If you have a GPU that supports CUDA, you may want to reinstall torch with CUDA capabilities.
+If you have a GPU that supports CUDA, you may want to reinstall torch with CUDA capabilities. Install cuda enabled torch according to the CUDA version installed in your computer. Follow the instructions in [Pytorch](https://pytorch.org/get-started/locally/) to install correct CUDA version.
 ```
 pip install --ignore-installed torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
 ```
