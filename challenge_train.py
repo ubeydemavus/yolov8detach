@@ -15,3 +15,4 @@ if __name__ == '__main__':
     # data described in challange.yaml, trained with Adam opt. for 80 epoch while freezing every layer except last layer. Cache data to disk to improve training time.
     results = model.train(data="challenge_yolo_format/challange.yaml", epochs=80, optimizer="Adam", freeze=22, cache="disk", image_weights=True, batch=64, workers=8, pretrained=True, lr0=0.001, device=device)  # train the model
     results = model.val()  # evaluate model performance on the validation set
+    #success = model.export(format="onnx")  # export the model to ONNX format if needed.

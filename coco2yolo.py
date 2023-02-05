@@ -11,6 +11,9 @@ current_dir = Path(dirname(__file__)).as_posix()
 
 
 def cocobbox2yolobbox(bbox,img_w=640,img_h=640):
+    """
+    converts coco bbox to yolo bbox format.
+    """
     limit_precision = lambda x: format(x,".6f")
     
     x,y,w,h = bbox
@@ -26,6 +29,9 @@ def cocobbox2yolobbox(bbox,img_w=640,img_h=640):
     return [x_mid,y_mid,w_new,h_new]
 
 def readvid_writeimg(source_vid,target_folder):
+    """
+    reads the video in 'source_vid', and outputs frames as images to target_folder.
+    """
     cap = cv2.VideoCapture(source_vid)
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     num2name = lambda x: "0" * (len(str(frame_count)) - len(str(x))) + str(x) 
@@ -46,6 +52,9 @@ def readvid_writeimg(source_vid,target_folder):
         cap.release()
         
 def cocoformat2yoloformat_annotations(images_root,jsn_file):
+    """
+    converts coco annoatations to yolo annotations format (with txt files.)
+    """
     getannbyimgid = lambda img_id, jsn: [ann for ann in jsn["annotations"] if ann["image_id"]==img_id]
     name2id = lambda fname: int(fname.split(".")[0]) + 1 
     fname2ftxt = lambda fname: fname.replace(".jpg",".txt")
@@ -73,10 +82,12 @@ target_train = join(current_dir,"challenge_yolo_format/images/train/")
 target_test = join(current_dir,"challenge_yolo_format/images/test/")
 target_val = join(current_dir,"challenge_yolo_format/images/val/")
 
+# check if file exists. if not stop. 
 assert Path(source_train).is_file(), f"{source_train} doesn't exist. Place video file in {source_train}"
 assert Path(source_test).is_file(), f"{source_test} doesn't exist. Place video file in {source_test}"
 assert Path(source_val).is_file(), f"{source_val} doesn't exist. Place video file in {source_val}"
 
+# Read each video and save into appropriate folders, then generate label files. e.g. "0000.txt"
 readvid_writeimg(source_train,target_train)
 cocoformat2yoloformat_annotations(target_train,join(current_dir,"challenge/annotations/instances_train.json"))
 readvid_writeimg(source_test,target_test)
@@ -84,7 +95,7 @@ cocoformat2yoloformat_annotations(target_test,join(current_dir,"challenge/annota
 readvid_writeimg(source_val,target_val)
 cocoformat2yoloformat_annotations(target_val,join(current_dir,"challenge/annotations/instances_val.json"))
 
-
+# this is needed for ultralytics library.
 yamlcontent = f"""
 path: {Path(os.getcwd()).as_posix()}/challenge_yolo_format  # dataset root dir
 train: images/train  # train images (relative to 'path')
@@ -96,5 +107,5 @@ names:
   0: bolt
   1: nut
 """
-with open("challenge_yolo_format/challange.yaml","w") as f:
+with open(f"{Path(os.getcwd()).as_posix()}/challenge_yolo_format/challange.yaml","w") as f:
     f.write(yamlcontent)
