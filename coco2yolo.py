@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from pathlib import Path
 import glob
+from os.path import dirname, join
+
+current_dir = Path(dirname(__file__)).as_posix()
 
 
 def cocobbox2yolobbox(bbox,img_w=640,img_h=640):
@@ -63,23 +66,23 @@ def cocoformat2yoloformat_annotations(images_root,jsn_file):
                 t.write(f"{item['category_id']-1} " + " ".join(cocobbox2yolobbox(item["bbox"])) +"\n" )    
 
 
-source_train = "challenge/images/train/train.mp4"
-source_test = "challenge/images/test/test.mp4"
-source_val = "challenge/images/val/val.mp4"
-target_train = "challenge_yolo_format/images/train/"
-target_test = "challenge_yolo_format/images/test/"
-target_val = "challenge_yolo_format/images/val/"
+source_train = join(current_dir,"challenge/images/train/train.mp4")
+source_test = join(current_dir,"challenge/images/test/test.mp4")
+source_val = join(current_dir,"challenge/images/val/val.mp4")
+target_train = join(current_dir,"challenge_yolo_format/images/train/")
+target_test = join(current_dir,"challenge_yolo_format/images/test/")
+target_val = join(current_dir,"challenge_yolo_format/images/val/")
 
 assert Path(source_train).is_file(), f"{source_train} doesn't exist. Place video file in {source_train}"
 assert Path(source_test).is_file(), f"{source_test} doesn't exist. Place video file in {source_test}"
 assert Path(source_val).is_file(), f"{source_val} doesn't exist. Place video file in {source_val}"
 
 readvid_writeimg(source_train,target_train)
-cocoformat2yoloformat_annotations(target_train,"challenge/annotations/instances_train.json")
+cocoformat2yoloformat_annotations(target_train,join(current_dir,"challenge/annotations/instances_train.json"))
 readvid_writeimg(source_test,target_test)
-cocoformat2yoloformat_annotations(target_test,"challenge/annotations/instances_test.json")
+cocoformat2yoloformat_annotations(target_test,join(current_dir,"challenge/annotations/instances_test.json"))
 readvid_writeimg(source_val,target_val)
-cocoformat2yoloformat_annotations(target_val,"challenge/annotations/instances_val.json")
+cocoformat2yoloformat_annotations(target_val,join(current_dir,"challenge/annotations/instances_val.json"))
 
 
 yamlcontent = f"""
